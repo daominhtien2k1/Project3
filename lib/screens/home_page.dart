@@ -204,28 +204,30 @@ class MessageList extends StatelessWidget {
                 const SizedBox(
                   width: 20,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      userMessages[index]['name'],
-                      style: const TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width/2,
-                      child: Text(
-                        userMessages[index]['message'],
-                        style: userMessages[index]['seen']
-                            ? Theme.of(context).textTheme.subtitle1?.apply(color: Colors.black54)
-                            : Theme.of(context).textTheme.subtitle2?.apply(color: Colors.black87),
-                        overflow: TextOverflow.ellipsis,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        userMessages[index]['name'],
+                        style: const TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w500),
                       ),
-                    )
-                  ],
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      SizedBox(
+                        // width: MediaQuery.of(context).size.width/2,
+                        child: Text(
+                          userMessages[index]['message'],
+                          style: userMessages[index]['seen']
+                              ? Theme.of(context).textTheme.subtitle1?.apply(color: Colors.black54)
+                              : Theme.of(context).textTheme.subtitle2?.apply(color: Colors.black87),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
