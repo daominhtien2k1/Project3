@@ -1,23 +1,24 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'package:chat_messenger/constants/data.dart';
+import 'package:chat_messenger/responsive.dart';
 import 'package:chat_messenger/theme/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:file_picker/file_picker.dart';
 
-class ChatDetailPage extends StatefulWidget {
-  const ChatDetailPage({super.key});
+class ChatDetailScreen extends StatefulWidget {
+  String name;
+  ChatDetailScreen({required this.name});
 
   @override
-  _ChatDetailPageState createState() => _ChatDetailPageState();
+  _ChatDetailScreenState createState() => _ChatDetailScreenState();
 }
 
-class _ChatDetailPageState extends State<ChatDetailPage> {
+class _ChatDetailScreenState extends State<ChatDetailScreen> {
   late TextEditingController _sendMessageController;
 
-  // late QuillController _controller;
   late HtmlEditorController controller;
   bool isTextSend = false;
   bool isMinimize = false;
@@ -27,7 +28,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   void initState() {
     super.initState();
     _sendMessageController = new TextEditingController();
-    // _controller = QuillController.basic();
     controller = HtmlEditorController();
   }
 
@@ -40,6 +40,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   @override
   Widget build(BuildContext context) {
     // print("Rebuild: ${DateTime.now()}");
+    String name = widget.name as String;
     return GestureDetector(
       onTap: () {
         // if (!kIsWeb) {
@@ -50,16 +51,17 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: grey.withOpacity(0.2),
           elevation: 0,
-          leading: TextButton(
+          leading: Responsive.isMobile(context) ? TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
               child: const Icon(
                 Icons.arrow_back_ios,
                 color: primary,
-              )),
+              )) : null,
           title: Row(
             children: <Widget>[
               Container(
@@ -78,8 +80,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Text(
-                    "Tyler Nix",
+                  Text(
+                    name,
                     style: TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold, color: black),
                   ),

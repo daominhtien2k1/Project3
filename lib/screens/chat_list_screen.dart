@@ -1,15 +1,19 @@
 import 'package:chat_messenger/constants/data.dart';
-import 'package:chat_messenger/screens/chat_detail_page.dart';
+import 'package:chat_messenger/responsive.dart';
+import 'package:chat_messenger/screens/chat_detail_screen.dart';
 import './widgets/CustomCircleAvatar.dart';
 import 'package:chat_messenger/theme/colors.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class ChatListScreen extends StatefulWidget {
+  final Function? onChangeDetailChatContent;
+  ChatListScreen({this.onChangeDetailChatContent});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  _ChatListScreenState createState() => _ChatListScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ChatListScreenState extends State<ChatListScreen> {
   TextEditingController _searchController = new TextEditingController();
 
   @override
@@ -18,13 +22,13 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         body: getBody(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: Responsive.isMobile(context) ? FloatingActionButton(
           elevation: 5,
           backgroundColor: Colors.blue,
           child: const Icon(Icons.camera),
           onPressed: () {},
-        ),
-        bottomNavigationBar: BottomAppBar(
+        ) : null,
+        bottomNavigationBar: Responsive.isMobile(context) ? BottomAppBar(
           shape: const CircularNotchedRectangle(),
           notchMargin: 7.0,
           child: Row(
@@ -50,7 +54,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-        ),
+        ) : null,
       ),
     );
   }
@@ -102,11 +106,11 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 30,
               ),
-              StoryList(),
+              if (Responsive.isMobile(context)) StoryList(),
               const SizedBox(
                 height: 30,
               ),
-              MessageList(),
+              MessageList(onChangeDetailChatContent: widget.onChangeDetailChatContent),
             ],
     );
   }
@@ -181,8 +185,9 @@ class StoryList extends StatelessWidget {
 }
 
 class MessageList extends StatelessWidget {
-  const MessageList({
-    Key? key,
+  final Function? onChangeDetailChatContent;
+  MessageList({
+    Key? key, this.onChangeDetailChatContent
   }) : super(key: key);
 
 
@@ -192,8 +197,11 @@ class MessageList extends StatelessWidget {
       children: List.generate(userMessages.length, (index) {
         return InkWell(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (_) => ChatDetailPage()));
+            if(Responsive.isMobile(context))
+              Navigator.push(context, MaterialPageRoute(builder: (_) => ChatDetailScreen(name: 'Dao Minh Tien')));
+            else {
+              onChangeDetailChatContent?.call(userMessages[index]['name'] as String);
+            }
           },
           child: Padding(
             padding: const EdgeInsets.only(bottom: 20),
